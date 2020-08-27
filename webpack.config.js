@@ -1,59 +1,38 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 const rules = [
-  {
-    rules: [
-      {
-        test: /\.s[ac]ss$/i,
+    {
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
+        use: {
+            loader: 'babel-loader',
+        },
+    },
+    {
+        test: /\.css$/,
         use: [
-          process.env.NODE_ENV !== 'production'
-            ? 'style-loader'
-            : MiniCssExtractPlugin.loader,
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true
-            }
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: true
-            }
-          }
-        ]
-      }
-    ]
-  },
-  {
-    test: /\.js$/,
-    exclude: /node_modules/,
-    use: ['babel-loader']
-  },
-  {
-    test: /\.css$/,
-    exclude: /node_modules/,
-    use: ['style-loader', 'css-loader']
-  }
-]
+            {
+                loader: 'style-loader',
+            },
+            {
+                loader: 'css-loader',
+            },
+        ],
+    },
+];
 
 module.exports = {
-  devtool: 'source-map',
-  entry: path.join(__dirname, 'src', 'index.js'),
-  output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, './build')
-  },
-  module: { rules },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index.html'
-    }),
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css'
-    })
-  ]
-}
+    output: {
+        path: path.resolve(__dirname, 'build'),
+        filename: 'bundle.js',
+    },
+    resolve: {
+        modules: [path.join(__dirname, 'src'), 'node_modules'],
+        alias: {
+            react: path.join(__dirname, 'node_modules', 'react'),
+        },
+    },
+    module: { rules },
+    plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
+};
