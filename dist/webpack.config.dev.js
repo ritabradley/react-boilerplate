@@ -1,24 +1,30 @@
-"use strict";
+'use strict'
 
-var path = require('path');
+var path = require('path')
 
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 
-var rules = [{
-  rules: [{
-    test: /\.s[ac]ss$/i,
+var rules = [
+  {
+    rules: [
+      {
+        test: /\.s[ac]ss$/i,
+        exclude: /node_modules/,
+        use: ['style-loader', 'css-loader', 'sass-loader']
+      }
+    ]
+  },
+  {
+    test: /\.js$/,
     exclude: /node_modules/,
-    use: ['style-loader', 'css-loader', 'sass-loader']
-  }]
-}, {
-  test: /\.js$/,
-  exclude: /node_modules/,
-  use: ['babel-loader']
-}, {
-  test: /\.css$/,
-  exclude: /node_modules/,
-  use: ['style-loader', 'css-loader']
-}];
+    use: ['babel-loader']
+  },
+  {
+    test: /\.css$/,
+    exclude: /node_modules/,
+    use: ['style-loader', 'css-loader']
+  }
+]
 module.exports = {
   entry: path.join(__dirname, 'src', 'index.js'),
   output: {
@@ -28,7 +34,9 @@ module.exports = {
   module: {
     rules: rules
   },
-  plugins: [new HtmlWebpackPlugin({
-    template: './public/index.html'
-  })]
-};
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index.html'
+    })
+  ]
+}
